@@ -1,19 +1,37 @@
 <template>
     <div id="app" class="container">
         <video-player></video-player>
-        <countdown></countdown>
+        <countdown :expired="" :secondsCountdown="" :clock=""></countdown>
     </div>
 </template>
 
 <script>
     import VideoPlayer from "./components/VideoPlayer.vue";
     import Countdown from "./components/Countdown.vue";
+    import * as time from './time';
 
     export default {
         name: "app",
         components: {
             Countdown,
             VideoPlayer
+        },
+        data() {
+            return {
+                expired: false,
+                secondsCountdown: false,
+                clock: time.getText()
+            }
+        },
+        mounted() {
+            setInterval(this.updateVars, 1000);
+        },
+        methods: {
+            updateVars: function () {
+                this.expired = time.isExpired();
+                this.secondsCountdown = time.isSecondsCountdown();
+                this.clock = time.getText();
+            }
         }
     }
 </script>
